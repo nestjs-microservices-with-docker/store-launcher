@@ -56,3 +56,21 @@ services:
       - PORT=3002
       - NATS_SERVERS=nats://nats:4222
       - DATABASE_URL=postgresql://postgres:123456@orders-db:5432/orders?schema=public
+
+  payments-ms:
+    container_name: payments-ms
+    build: ./payments-ms
+    volumes:
+      - ./payments-ms/src:/usr/src/app/src
+    command: npm run start:dev
+    ports:
+      - ${PAYMENTS_MS_PORT}:${PAYMENTS_MS_PORT}
+    environment:
+      - PORT=${PAYMENTS_MS_PORT}
+      - NATS_SERVERS=nats://nats:4222
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_PUBLIC_KEY=${STRIPE_PUBLIC_KEY}
+
+      - STRIPE_ENDPOINT_SECRET=${STRIPE_ENDPOINT_SECRET}
+      - PAYMENTS_SUCCESS_URL=${PAYMENTS_SUCCESS_URL}
+      - PAYMENTS_CANCEL_URL=${PAYMENTS_CANCEL_URL}
