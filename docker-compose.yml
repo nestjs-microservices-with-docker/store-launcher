@@ -14,8 +14,15 @@ services:
     build: ./client-gateway
     ports: 
       - ${CLIENT_GATEWAY_PORT}:3000
-    volumes:
-      - ./client-gateway/src:/usr/src/app/src
+    develop:
+      watch:
+        - action: sync
+          path: ./client-gateway/src
+          target: /usr/src/app/src
+          ignore:
+            - node_modules/
+    # volumes:
+    #   - ./client-gateway/src:/usr/src/app/src
     command: npm run start:dev
     environment:
       - PORT=3000
@@ -23,8 +30,15 @@ services:
   products-ms:
     container_name: products-ms
     build: ./products-ms
-    volumes:
-      - ./products-ms/src:/usr/src/app/src
+    # volumes:
+    #   - ./products-ms/src:/usr/src/app/src
+    develop:
+      watch:
+        - action: sync
+          path: ./products-ms/src
+          target: /usr/src/app/src
+          ignore:
+            - node_modules/
     command: npm run start:dev
     environment:
       - PORT=3001
