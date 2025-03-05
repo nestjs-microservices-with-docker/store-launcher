@@ -49,8 +49,14 @@ services:
       - orders-db
     container_name: orders-ms
     build: ./orders-ms
-    volumes:
-      - ./orders-ms/src:/usr/src/app/src
+    develop:
+        watch:
+        - action: sync
+          path: ./orders-ms/src
+          target: /usr/src/app/src
+          ignore:
+            - node_modules/
+
     command: npm run start:dev
     environment:
       - PORT=3002
@@ -60,8 +66,15 @@ services:
   payments-ms:
     container_name: payments-ms
     build: ./payments-ms
-    volumes:
-      - ./payments-ms/src:/usr/src/app/src
+    # volumes:
+    #   - ./payments-ms/src:/usr/src/app/src
+    develop:
+      watch:
+        - action: sync
+          path: ./payments-ms/src
+          target: /usr/src/app/src
+          ignore:
+            - node_modules/
     command: npm run start:dev
     ports:
       - ${PAYMENTS_MS_PORT}:${PAYMENTS_MS_PORT}
