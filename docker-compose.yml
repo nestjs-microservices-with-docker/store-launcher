@@ -101,3 +101,23 @@ services:
       - STRIPE_ENDPOINT_SECRET=${STRIPE_ENDPOINT_SECRET}
       - PAYMENTS_SUCCESS_URL=${PAYMENTS_SUCCESS_URL}
       - PAYMENTS_CANCEL_URL=${PAYMENTS_CANCEL_URL}
+
+  auth-ms:
+    container_name: auth-ms
+    build: ./auth-ms
+    # volumes:
+    #   - ./auth-ms/src:/usr/src/app/src
+    develop:
+      watch:
+        - action: sync
+          path: ./auth-ms/src
+          target: /usr/src/app/src
+          ignore:
+            - node_modules/
+    command: npm run start:dev
+    ports:
+      - ${AUTH_MS_PORT}:${AUTH_MS_PORT}
+    environment:
+      - PORT=${AUTH_MS_PORT}
+      - NATS_SERVERS=nats://nats:4222
+      - DATABASE_URL=${AUTH_DATABASE_URL}
