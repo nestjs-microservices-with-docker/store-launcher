@@ -37,3 +37,5 @@ docker build -f dockerfile.prod -t client-gateway .
 
 docker compose -f docker-compose.prod.yml build
 ```
+
+docker build -f dockerfile.prod -t northamerica-south1-docker.pkg.dev/store-microservices-453209/image-registry/auth-ms .
